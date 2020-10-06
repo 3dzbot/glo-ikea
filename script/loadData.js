@@ -30,7 +30,7 @@ export const loadData = () => {
         } else if (prop === 'wishlist'){
             //отбираем по id нужные ел-ты из БД json
             getData.wishList(wishList, (data)=> {console.dir({whishList: data})});
-        } else {
+        } else if (prop === 'cat' || prop === 'subcat') {
             getData.category(prop, value, (data) => console.log(data));
         }
     }
@@ -45,5 +45,5 @@ export const loadData = () => {
     }
 
     getData.catalog((data) => console.log(data));
-    getData.subCatalog((data) => console.log(data));
+    getData.subCatalog('Декор', (data) => console.log(data));
 };
