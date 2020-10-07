@@ -1,11 +1,14 @@
-export const catalog = () => {
+import generateSubCatalog from './generateSubCatalog.js';
+import {getData} from './getData.js';
 
+export const catalog = () => {
+    const updateSubcatalog =  generateSubCatalog();
     const btnBurger = document.querySelector('.btn-burger');
     const catalog = document.querySelector('.catalog');
     const btnClose = document.querySelector('.btn-close');
     const subCatalog = document.querySelector('.subcatalog');
     const subCatalogHeader = document.querySelector('.subcatalog-header');
-    const btnReturn = document.querySelector('.btn-return');
+    // const btnReturn = document.querySelector('.btn-return');
 
     const overlay = document.createElement('div');
     overlay.classList.add('overlay');
@@ -27,8 +30,10 @@ export const catalog = () => {
         const target = e.target;
         const itemList = target.closest('.catalog-list__item');
         if(itemList){
-            subCatalogHeader.innerHTML = itemList.innerHTML;
-            subCatalog.classList.add('subopen');
+            getData.subCatalog(target.textContent, (data)=> {
+                updateSubcatalog(target.textContent, data);
+                subCatalog.classList.add('subopen');
+            })            
         }
     }
 
@@ -40,7 +45,13 @@ export const catalog = () => {
     btnClose.addEventListener('click', closeMenu);
     overlay.addEventListener('click', closeMenu);
     catalog.addEventListener('click', openSubMenu);
-    btnReturn.addEventListener('click', closeSubMenu);
+    // btnReturn.addEventListener('click', closeSubMenu);
+    subCatalog.addEventListener('click', (e)=>{
+        const btnReturn = e.target.closest('.btn-return');
+        if(btnReturn) {
+            closeSubMenu();
+        }
+    })
 
     document.addEventListener('keydown', (e)=> {
         if(e.code === 'Escape') {
